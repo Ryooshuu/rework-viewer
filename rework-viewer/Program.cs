@@ -1,8 +1,14 @@
+using osu.Framework.Platform;
+using rework_viewer.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var storage = new NativeStorage(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "rework-viewer"));
+var access = new RealmAccess(storage, "client.realm");
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton(access);
 
 var app = builder.Build();
 
