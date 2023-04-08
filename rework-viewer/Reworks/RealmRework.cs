@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 using osu.Framework.Testing;
 using Realms;
 using rework_viewer.Database;
@@ -26,6 +27,8 @@ public class RealmRework : RealmObject, IHasGuidPrimaryKey, IHasRealmFiles, ISof
 
     public string DllFile { get; set; } = null!;
 
+    public RealmRuleset Ruleset { get; internal set; } = null!;
+    
     public IList<RealmNamedFileUsage> Files { get; } = null!;
 
     public bool DeletePending { get; set; }
@@ -41,9 +44,15 @@ public class RealmRework : RealmObject, IHasGuidPrimaryKey, IHasRealmFiles, ISof
     /// </summary>
     public bool Protected { get; set; }
 
-    public RealmRework()
+    public RealmRework(RealmRuleset ruleset)
     {
+        Ruleset = ruleset;
         ID = Guid.NewGuid();
+    }
+    
+    [UsedImplicitly]
+    private RealmRework()
+    {
     }
     
     public bool Equals(RealmRework? other)

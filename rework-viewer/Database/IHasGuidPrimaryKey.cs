@@ -1,11 +1,9 @@
-﻿using Newtonsoft.Json;
-using Realms;
+﻿using Realms;
 
 namespace rework_viewer.Database;
 
 public interface IHasGuidPrimaryKey
 {
-    [JsonIgnore]
     [PrimaryKey]
     Guid ID { get; }
 }
