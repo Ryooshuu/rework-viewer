@@ -5,6 +5,8 @@ using osu.Framework.Development;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using Realms;
+using rework_viewer.Models;
+using rework_viewer.Reworks;
 using LogLevel = osu.Framework.Logging.LogLevel;
 
 namespace rework_viewer.Database;
@@ -400,7 +402,14 @@ public class RealmAccess : IDisposable
         {
             SchemaVersion = schema_version,
             MigrationCallback = onMigration,
-            FallbackPipePath = tempPathLocation
+            FallbackPipePath = tempPathLocation,
+            Schema = new[]
+            {
+                typeof(RealmFile),
+                typeof(RealmNamedFileUsage),
+                typeof(RealmRework),
+                typeof(RealmRuleset),
+            }
         };
     }
 
