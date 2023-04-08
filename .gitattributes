@@ -1,0 +1,7 @@
+*.html linguist-vendored
+*.cshtml linguist-vendored
+*.js linguist-vendored
+*.css linguist-vendored
+*.sass linguist-vendored
+.dockerignore linguist-vendored
+Dockerfile linguist-vendored
