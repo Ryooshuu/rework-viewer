@@ -29,4 +29,9 @@ public interface IModelImporter<TModel> : ICanAcceptFiles
     /// A user displayable name for the model type associated with this manager.
     /// </summary>
     string HumanisedModelName => $"{typeof(TModel).Name.Replace(@"Info", "").ToLowerInvariant()}";
+    
+    /// <summary>
+    /// Fired when the user requests to view the resulting import.
+    /// </summary>
+    public Action<IEnumerable<Live<TModel>>>? PresentImport { set; }
 }

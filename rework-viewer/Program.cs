@@ -1,3 +1,4 @@
+using osu.Framework.Extensions;
 using osu.Framework.Platform;
 using rework_viewer.Database;
 using rework_viewer.Reworks;
@@ -38,7 +39,10 @@ app.Run();
 void ensureCoreRulesets()
 {
     var types = Enum.GetValues<RulesetType>();
+    var manager = new ReworkManager(storage, realm);
 
+    var didntExist = new List<RulesetType>();
+    
     realm.Write(r =>
     {
         foreach (var rulesetType in types)
@@ -46,7 +50,29 @@ void ensureCoreRulesets()
             if (!r.All<RealmRuleset>().Any(ruleset => ruleset.TypeInt == (int) rulesetType))
             {
                 r.Add(new RealmRuleset { Type = rulesetType });
+                didntExist.Add(rulesetType);
             }
         }
     });
+
+    manager.PresentImport = imports =>
+    {
+        foreach (var import in imports)
+        {
+            import.PerformWrite(r =>
+            {
+                r.Protected = true;
+                r.Name = r.Ruleset.Type.GetDescription();
+                r.Author = "osu!dev";
+                r.Description = "core";
+            });
+        }
+    };
+    
+    manager.Import(@"D:\Projects\Projects\osu-irisu\osu.Game.Rulesets.Catch\bin\Release\net6.0\osu.Game.Rulesets.Catch.dll").Wait();
+
+    // foreach (var rulesetType in didntExist)
+    // {
+    //     manager.Import(@"D:\Projects\Projects\osu-irisu\osu.Game.Rulesets.Catch\bin\Release\net6.0\osu.Game.Rulesets.Catch.dll");
+    // }
 }

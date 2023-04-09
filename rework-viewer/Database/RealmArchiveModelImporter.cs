@@ -52,6 +52,11 @@ public abstract class RealmArchiveModelImporter<TModel> : IModelImporter<TModel>
 
     protected readonly RealmAccess Realm;
 
+    /// <summary>
+    /// Fired when the user requests to view the resulting import.
+    /// </summary>
+    public Action<IEnumerable<Live<TModel>>>? PresentImport { get; set; }
+
     protected RealmArchiveModelImporter(Storage storage, RealmAccess realm)
     {
         Realm = realm;
@@ -91,6 +96,11 @@ public abstract class RealmArchiveModelImporter<TModel> : IModelImporter<TModel>
                 Logger.Error(e, $@"Could not import ({task})", LoggingTarget.Database);
             }
         })).ConfigureAwait(false);
+
+        if (imported.Count > 0 && PresentImport != null)
+        {
+            PresentImport?.Invoke(imported);
+        }
 
         return imported;
     }

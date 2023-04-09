@@ -44,15 +44,10 @@ public class RealmRework : RealmObject, IHasGuidPrimaryKey, IHasRealmFiles, ISof
     /// </summary>
     public bool Protected { get; set; }
 
-    public RealmRework(RealmRuleset ruleset)
-    {
-        Ruleset = ruleset;
-        ID = Guid.NewGuid();
-    }
-    
     [UsedImplicitly]
-    private RealmRework()
+    public RealmRework()
     {
+        ID = Guid.NewGuid();
     }
     
     public bool Equals(RealmRework? other)
