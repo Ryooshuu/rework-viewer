@@ -3,7 +3,7 @@ using osu.Framework.Platform;
 using rework_viewer.Database;
 using rework_viewer.Reworks;
 
-var builder = WebApplication.CreateBuilder(args);
+// var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var storage = new NativeStorage(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "rework-viewer"));
@@ -11,30 +11,30 @@ var realm = new RealmAccess(storage, "client.realm");
 
 ensureCoreRulesets();
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton(realm);
+// builder.Services.AddControllersWithViews();
+// builder.Services.AddSingleton(realm);
+//
+// var app = builder.Build();
+//
+// // Configure the HTTP request pipeline.
+// if (!app.Environment.IsDevelopment())
+// {
+//     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//     app.UseHsts();
+// }
+//
+// app.UseHttpsRedirection();
+// app.UseStaticFiles();
+// app.UseRouting();
+//
+//
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller}/{action=Index}/{id?}");
+//
+// app.MapFallbackToFile("index.html");
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html");
-
-app.Run();
+// app.Run();
 
 void ensureCoreRulesets()
 {
@@ -68,8 +68,17 @@ void ensureCoreRulesets()
             });
         }
     };
-    
-    manager.Import(@"D:\Projects\Projects\osu-irisu\osu.Game.Rulesets.Catch\bin\Release\net6.0\osu.Game.Rulesets.Catch.dll").Wait();
+
+    var repo = new ReworkRepository(storage, realm);
+    repo.GetRework("https://github.com/irisu01/osu/tree/catch-movement-rework", RulesetType.Catch, r =>
+    {
+        // ReSharper disable once StringLiteralTypo
+        r.Author = "Irisu";
+        r.Name = "catch-movement-rework";
+        r.Description = "Complete rework of the movement skill, plus the addition of a strain skill.";
+    }).Wait();
+
+    // manager.Import(@"D:\Projects\Projects\osu-irisu\osu.Game.Rulesets.Catch\bin\Release\net6.0\osu.Game.Rulesets.Catch.dll").Wait();
 
     // foreach (var rulesetType in didntExist)
     // {

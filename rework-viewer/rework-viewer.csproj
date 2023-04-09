@@ -16,6 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CliWrap" Version="3.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.0-preview.5.22303.8" />
         <PackageReference Include="ppy.osu.Framework" Version="2023.403.0" />
         <PackageReference Include="ppy.osu.Game" Version="2023.403.1" />
