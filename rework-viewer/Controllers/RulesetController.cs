@@ -19,10 +19,20 @@ public class RulesetController : ControllerBase
     }
 
     [HttpGet]
+    [Route("{type}")]
     public ActionResult? Get(RulesetType type)
     {
         var ruleset = realm.Realm.All<RealmRuleset>()
            .FirstOrDefault(rule => rule.TypeInt == (int) type);
+        
+        return new DataResult(ruleset);
+    }
+
+    [HttpGet]
+    [Route("")]
+    public ActionResult? Get()
+    {
+        var ruleset = realm.Realm.All<RealmRuleset>().ToArray();
         
         return new DataResult(ruleset);
     }
